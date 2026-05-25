@@ -3,205 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>ARYA STORE | Digital Mudah & Terpercaya</title>
+    <title>ARYA STORE | Premium Digital Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f5f7fb; color: #1a1a2e; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f8; color: #1a1a2e; }
 
         /* Landing Page */
-        .landing-page { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; flex-wrap: wrap; gap: 20px; }
+        .landing-page { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; }
+        .landing-page::before { content: ''; position: absolute; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px; animation: bgMove 20s linear infinite; }
+        @keyframes bgMove { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; flex-wrap: wrap; gap: 20px; position: relative; z-index: 2; }
         .logo { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { background: white; width: 45px; height: 45px; border-radius: 25px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #667eea; }
-        .logo h1 { color: white; font-size: 1.8rem; }
-        .logo p { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
+        .logo-icon { background: white; width: 48px; height: 48px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #667eea; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .logo h1 { color: white; font-size: 1.8rem; letter-spacing: -0.5px; }
+        .logo p { color: rgba(255,255,255,0.8); font-size: 0.75rem; }
         .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
-        .nav-links a { color: white; text-decoration: none; font-weight: 500; cursor: pointer; }
-        .btn-login-nav { background: white; color: #667eea !important; padding: 10px 25px; border-radius: 30px; font-weight: 600 !important; }
-        .hero { display: flex; align-items: center; justify-content: space-between; padding: 60px 50px; flex-wrap: wrap; gap: 40px; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { opacity: 0.8; }
+        .btn-login-nav { background: white; color: #667eea !important; padding: 10px 25px; border-radius: 40px; font-weight: 600 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .hero { display: flex; align-items: center; justify-content: space-between; padding: 60px 50px; flex-wrap: wrap; gap: 40px; position: relative; z-index: 2; }
         .hero-content { flex: 1; color: white; }
-        .hero-content h1 { font-size: 3rem; margin-bottom: 20px; }
+        .hero-content h1 { font-size: 3.2rem; margin-bottom: 20px; line-height: 1.2; }
+        .hero-content p { font-size: 1.1rem; opacity: 0.9; line-height: 1.5; }
         .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 30px; }
-        .btn-primary { background: white; color: #667eea; padding: 12px 30px; border-radius: 40px; font-weight: 700; border: none; cursor: pointer; }
-        .btn-outline { border: 2px solid white; color: white; padding: 12px 30px; border-radius: 40px; background: transparent; cursor: pointer; }
-        .hero-image i { font-size: 200px; color: rgba(255,255,255,0.9); }
-        .features { background: white; padding: 60px 50px; text-align: center; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .feature-card { padding: 30px; border-radius: 24px; background: #f8fafc; transition: 0.3s; }
-        .feature-card i { font-size: 50px; color: #667eea; margin-bottom: 20px; }
+        .btn-primary { background: white; color: #667eea; padding: 14px 35px; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .btn-outline { border: 2px solid white; color: white; padding: 14px 35px; border-radius: 50px; background: transparent; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .btn-outline:hover { background: white; color: #667eea; }
+        .hero-image i { font-size: 220px; color: rgba(255,255,255,0.9); filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); }
+        .features { background: white; padding: 80px 50px; text-align: center; }
+        .features h2 { font-size: 2.2rem; margin-bottom: 50px; color: #1a1a2e; position: relative; display: inline-block; }
+        .features h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 3px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .feature-card { padding: 35px 25px; border-radius: 28px; background: #f8fafc; transition: 0.3s; cursor: pointer; }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 35px rgba(0,0,0,0.1); }
+        .feature-card i { font-size: 55px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; }
+        .feature-card h3 { margin-bottom: 10px; }
         .footer { background: #1a1a2e; color: white; text-align: center; padding: 40px; }
 
         /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-content { background: white; border-radius: 32px; padding: 35px; max-width: 450px; width: 90%; max-height: 90vh; overflow-y: auto; }
-        .auth-input { width: 100%; padding: 14px 18px; border: 2px solid #e2e8f0; border-radius: 24px; font-size: 16px; margin-bottom: 16px; }
-        .auth-input:focus { outline: none; border-color: #667eea; }
-        .auth-btn { width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px; border-radius: 32px; font-weight: 700; cursor: pointer; }
-        .close-modal { float: right; font-size: 24px; cursor: pointer; }
-        .alert-error { background: #ef4444; color: white; padding: 12px; border-radius: 20px; margin-bottom: 15px; text-align: center; }
-        .alert-success { background: #10b981; color: white; padding: 12px; border-radius: 20px; margin-bottom: 15px; text-align: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; border-radius: 40px; padding: 35px; max-width: 450px; width: 90%; max-height: 90vh; overflow-y: auto; animation: modalSlide 0.3s ease; }
+        @keyframes modalSlide { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .auth-input { width: 100%; padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 16px; margin-bottom: 16px; transition: 0.3s; }
+        .auth-input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
+        .auth-btn { width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px; border-radius: 40px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .close-modal { float: right; font-size: 24px; cursor: pointer; color: #94a3b8; transition: 0.3s; }
+        .close-modal:hover { color: #ef4444; }
+        .alert-error { background: #fee2e2; color: #dc2626; padding: 12px; border-radius: 20px; margin-bottom: 15px; text-align: center; }
+        .alert-success { background: #dcfce7; color: #16a34a; padding: 12px; border-radius: 20px; margin-bottom: 15px; text-align: center; }
 
         /* Dashboard */
-        .dashboard { display: none; background: #f5f7fb; min-height: 100vh; }
-        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .dashboard { display: none; background: #f0f2f8; min-height: 100vh; }
+        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 20px 20px 80px 20px; }
         
-        /* Bottom Navigation */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px 20px; border-top: 1px solid #e2e8f0; z-index: 100; }
-        .nav-item { text-align: center; cursor: pointer; padding: 8px; border-radius: 30px; transition: 0.3s; color: #64748b; }
-        .nav-item.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        /* Bottom Navigation Premium */
+        .bottom-nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background: rgba(26,26,46,0.95); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 10px 20px; border-radius: 60px; width: 90%; max-width: 400px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); }
+        .nav-item { text-align: center; cursor: pointer; padding: 8px 20px; border-radius: 40px; transition: 0.3s; color: #94a3b8; }
         .nav-item i { font-size: 22px; display: block; margin-bottom: 4px; }
-        .nav-item span { font-size: 11px; }
+        .nav-item span { font-size: 11px; font-weight: 500; }
+        .nav-item.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
         
-        /* Header Dashboard */
-        .dashboard-header { background: white; border-radius: 32px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .welcome-text { font-size: 14px; color: #64748b; }
-        .user-name { font-size: 20px; font-weight: 700; color: #1a1a2e; }
-        .balance-card-dash { background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 24px; padding: 20px; color: white; margin-top: 15px; }
-        .balance-label { font-size: 14px; opacity: 0.9; }
-        .balance-amount { font-size: 32px; font-weight: 800; margin-top: 5px; }
+        /* Header Dashboard Premium */
+        .dashboard-header { background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 35px; padding: 25px; margin-bottom: 25px; color: white; position: relative; overflow: hidden; }
+        .dashboard-header::before { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px; border-radius: 50%; }
+        .welcome-text { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
+        .user-name { font-size: 22px; font-weight: 800; margin-bottom: 15px; }
+        .balance-card-dash { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 28px; padding: 18px; margin-top: 10px; }
+        .balance-label { font-size: 13px; opacity: 0.9; margin-bottom: 5px; }
+        .balance-amount { font-size: 34px; font-weight: 800; letter-spacing: -1px; }
         
         /* Server Status */
-        .server-status { display: flex; gap: 15px; margin-bottom: 20px; overflow-x: auto; }
-        .server-card-status { background: white; border-radius: 20px; padding: 12px 20px; min-width: 120px; text-align: center; }
+        .server-status { display: flex; gap: 12px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; }
+        .server-card-status { background: white; border-radius: 24px; padding: 12px 20px; min-width: 110px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.3s; }
         .status-online { color: #10b981; font-weight: 600; }
         .status-maintenance { color: #f59e0b; font-weight: 600; }
         
-        /* Menu Grid */
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-        .menu-card { background: white; border-radius: 24px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .menu-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .menu-card i { font-size: 40px; color: #667eea; margin-bottom: 12px; }
+        /* Menu Grid Premium */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
+        .menu-card { background: white; border-radius: 28px; padding: 22px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .menu-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .menu-card i { font-size: 42px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 12px; }
         .menu-card h4 { font-size: 16px; margin-bottom: 5px; }
         .menu-card p { font-size: 12px; color: #64748b; }
         
         /* Section Title */
-        .section-title { font-size: 18px; font-weight: 700; margin: 20px 0 15px 0; display: flex; justify-content: space-between; align-items: center; }
-        .section-link { font-size: 13px; color: #667eea; cursor: pointer; }
+        .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 15px 0; display: flex; justify-content: space-between; align-items: center; }
+        .section-link { font-size: 12px; color: #667eea; cursor: pointer; font-weight: 500; }
         
         /* Service List */
-        .service-list-horizontal { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
-        .service-item-card { background: white; border-radius: 20px; padding: 15px; min-width: 120px; text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid #e2e8f0; }
-        .service-item-card.selected { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent; }
-        .service-item-card i { font-size: 28px; margin-bottom: 8px; }
+        .service-list-horizontal { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin; }
+        .service-item-card { background: white; border-radius: 24px; padding: 18px; min-width: 130px; text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid #e2e8f0; }
+        .service-item-card.selected { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent; transform: scale(1.02); }
+        .service-item-card i { font-size: 32px; margin-bottom: 10px; }
         .service-item-card .price { font-weight: 700; margin-top: 8px; font-size: 14px; }
         
         /* Order Section */
-        .order-section { background: white; border-radius: 24px; padding: 20px; margin-top: 20px; }
-        .virtual-number-box { background: #fef3c7; border-radius: 20px; padding: 20px; text-align: center; margin: 15px 0; }
-        .virtual-number-box h2 { font-size: 1.5rem; color: #d97706; font-family: monospace; }
-        .success-box { background: #10b981; color: white; padding: 20px; border-radius: 20px; text-align: center; margin: 15px 0; }
-        .failed-box { background: #ef4444; color: white; padding: 20px; border-radius: 20px; text-align: center; margin: 15px 0; }
-        .btn-order { width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px; border-radius: 40px; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        .order-section { background: white; border-radius: 28px; padding: 25px; margin-top: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .virtual-number-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 24px; padding: 25px; text-align: center; margin: 15px 0; }
+        .virtual-number-box h2 { font-size: 1.8rem; color: #d97706; font-family: monospace; letter-spacing: 2px; }
+        .success-box { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 25px; border-radius: 24px; text-align: center; margin: 15px 0; }
+        .failed-box { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 25px; border-radius: 24px; text-align: center; margin: 15px 0; }
+        .btn-order { width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 16px; border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 15px; transition: 0.3s; font-size: 16px; }
+        .btn-order:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102,126,234,0.3); }
         
         /* Profile Stats */
         .profile-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: white; border-radius: 20px; padding: 15px; text-align: center; }
-        .stat-value { font-size: 24px; font-weight: 800; color: #667eea; }
+        .stat-card { background: white; border-radius: 24px; padding: 18px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .stat-value { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .stat-label { font-size: 12px; color: #64748b; margin-top: 5px; }
         
         /* API Key Box */
-        .api-key-box { background: #f1f5f9; border-radius: 20px; padding: 15px; margin: 15px 0; }
-        .api-key-value { font-family: monospace; font-size: 14px; background: white; padding: 10px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .api-key-box { background: linear-gradient(135deg, #1a1a2e, #2d2d5e); border-radius: 24px; padding: 20px; margin: 15px 0; color: white; }
+        .api-key-value { font-family: monospace; font-size: 14px; background: rgba(255,255,255,0.1); padding: 12px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+        .copy-btn { background: #667eea; color: white; border: none; padding: 5px 15px; border-radius: 30px; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .copy-btn:hover { background: #764ba2; }
         
         /* Activity Log */
-        .activity-log { background: white; border-radius: 20px; padding: 15px; max-height: 300px; overflow-y: auto; }
-        .activity-item { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+        .activity-log { background: white; border-radius: 24px; padding: 20px; max-height: 400px; overflow-y: auto; }
+        .activity-item { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 13px; transition: 0.3s; }
+        .activity-item:hover { background: #f8fafc; }
         
         .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #e2e8f0; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Deposit Modal */
-        .deposit-amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-        .deposit-option { background: #f1f5f9; padding: 12px; border-radius: 20px; text-align: center; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .deposit-option:hover { background: #667eea; color: white; }
-        .deposit-option.selected { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        
-        @media (max-width: 768px) { .navbar, .hero { padding: 20px; } .hero-content h1 { font-size: 2rem; } .dashboard-container { padding: 15px 15px 70px 15px; } }
+        @media (max-width: 768px) { .navbar, .hero { padding: 20px; } .hero-content h1 { font-size: 2rem; } .hero-image i { font-size: 150px; } .menu-grid { gap: 12px; } .menu-card { padding: 15px; } }
     </style>
 </head>
 <body>
     <!-- Landing Page -->
     <div id="landingPage" class="landing-page">
         <div class="navbar">
-            <div class="logo"><div class="logo-icon"><i class="fas fa-store"></i></div><div><h1>ARYA STORE</h1><p>Digital Mudah & Terpercaya</p></div></div>
-            <div class="nav-links"><a onclick="scrollToSection('home')">Beranda</a><a onclick="scrollToSection('features')">Fitur</a><a onclick="showApiDocsLanding()">Docs API</a><a class="btn-login-nav" onclick="openLoginModal()">Login</a></div>
+            <div class="logo"><div class="logo-icon"><i class="fas fa-crown"></i></div><div><h1>ARYA STORE</h1><p>Premium Digital Hub</p></div></div>
+            <div class="nav-links"><a onclick="scrollToSection('home')">Beranda</a><a onclick="scrollToSection('features')">Layanan</a><a onclick="showApiDocs()">Docs API</a><a class="btn-login-nav" onclick="openLoginModal()">MASUK</a></div>
         </div>
         <div class="hero">
-            <div class="hero-content"><h1>Digital Mudah<br>Tanpa Perlu Ribet</h1><p>Platform digital lengkap untuk kebutuhan Virtual OTP, PPOB, dan SMM yang cepat, aman, dan terjangkau!</p>
-                <div class="hero-buttons"><button class="btn-primary" onclick="openLoginModal()">PESAN SEKARANG</button><button class="btn-outline" onclick="showApiDocsLanding()">DOCS API</button></div>
+            <div class="hero-content"><h1>Digital Hub<br>Premium & Terpercaya</h1><p>Platform digital lengkap untuk kebutuhan Virtual OTP, SMM Panel, dan PPOB dengan harga terbaik!</p>
+                <div class="hero-buttons"><button class="btn-primary" onclick="openLoginModal()">MULAI SEKARANG</button><button class="btn-outline" onclick="showApiDocs()">DOCS API</button></div>
             </div>
             <div class="hero-image"><i class="fas fa-store"></i></div>
         </div>
-        <div class="features" id="features"><h2>Fitur Unggulan</h2>
+        <div class="features" id="features"><h2>✨ Layanan Premium Kami</h2>
             <div class="feature-grid">
-                <div class="feature-card"><i class="fas fa-phone-alt"></i><h3>Virtual Number</h3><p>OTP instan semua negara</p></div>
+                <div class="feature-card"><i class="fas fa-phone-alt"></i><h3>Virtual Number</h3><p>OTP instan 10+ negara</p></div>
                 <div class="feature-card"><i class="fas fa-chart-line"></i><h3>SMM Panel</h3><p>Followers, Likes, Views</p></div>
                 <div class="feature-card"><i class="fas fa-bolt"></i><h3>PPOB</h3><p>Listrik, Pulsa, Data</p></div>
                 <div class="feature-card"><i class="fas fa-code"></i><h3>API Ready</h3><p>Integrasi Bot WA/TG</p></div>
             </div>
         </div>
-        <div class="footer"><p>&copy; 2024 ARYA STORE | Digital Mudah & Terpercaya | Real API Provider</p></div>
+        <div class="footer"><p>&copy; 2024 ARYA STORE | Premium Digital Hub | Real API Provider</p></div>
     </div>
 
     <!-- Auth Modal -->
-    <div id="authModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeAuthModal()">&times;</span><div class="modal-header"><h2 id="authTitle">Login ARYA STORE</h2></div><div id="authAlert"></div>
-        <div id="loginForm"><input type="text" id="loginUsername" class="auth-input" placeholder="Username"><input type="password" id="loginPassword" class="auth-input" placeholder="Password"><button class="auth-btn" onclick="handleLogin()">Login</button><div style="text-align:center; margin-top:15px;">Belum punya akun? <a onclick="showRegisterForm()" style="color:#667eea; cursor:pointer;">Daftar</a></div></div>
-        <div id="registerForm" style="display:none;"><input type="text" id="regUsername" class="auth-input" placeholder="Username"><input type="email" id="regEmail" class="auth-input" placeholder="Email"><input type="password" id="regPassword" class="auth-input" placeholder="Password (min 6)"><button class="auth-btn" onclick="handleRegister()">Daftar</button><div style="text-align:center; margin-top:15px;">Sudah punya akun? <a onclick="showLoginForm()" style="color:#667eea; cursor:pointer;">Login</a></div></div>
+    <div id="authModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeAuthModal()">&times;</span><div class="modal-header"><h2 id="authTitle" style="text-align:center;">✨ Login ARYA STORE</h2></div><div id="authAlert"></div>
+        <div id="loginForm"><input type="text" id="loginUsername" class="auth-input" placeholder="Username"><input type="password" id="loginPassword" class="auth-input" placeholder="Password"><button class="auth-btn" onclick="handleLogin()">MASUK SEKARANG</button><div style="text-align:center; margin-top:15px;">Belum punya akun? <a onclick="showRegisterForm()" style="color:#667eea; cursor:pointer; font-weight:600;">Daftar Gratis</a></div></div>
+        <div id="registerForm" style="display:none;"><input type="text" id="regUsername" class="auth-input" placeholder="Username"><input type="email" id="regEmail" class="auth-input" placeholder="Email"><input type="password" id="regPassword" class="auth-input" placeholder="Password (min 6)"><button class="auth-btn" onclick="handleRegister()">DAFTAR SEKARANG</button><div style="text-align:center; margin-top:15px;">Sudah punya akun? <a onclick="showLoginForm()" style="color:#667eea; cursor:pointer; font-weight:600;">Login</a></div></div>
     </div></div>
 
     <!-- API Docs Modal -->
-    <div id="apiDocsModal" class="modal"><div class="modal-content" style="max-width: 650px;"><span class="close-modal" onclick="closeApiDocsModal()">&times;</span><div class="modal-header"><h2><i class="fas fa-code"></i> Dokumentasi API</h2></div>
+    <div id="apiDocsModal" class="modal"><div class="modal-content" style="max-width: 600px;"><span class="close-modal" onclick="closeApiDocsModal()">&times;</span><div class="modal-header"><h2 style="text-align:center;"><i class="fas fa-code"></i> API Documentation</h2></div>
         <div style="background:#f8fafc; border-radius:24px; padding:20px;">
             <h3 style="color:#667eea;">🌐 Base URL</h3>
-            <code style="display:block; background:#e2e8f0; padding:10px; border-radius:12px;">https://arya-store.api/v1</code>
+            <code style="display:block; background:#e2e8f0; padding:12px; border-radius:16px; margin:10px 0;">https://arya-store.api/v1</code>
             <h3 style="color:#667eea; margin-top:15px;">🔑 Authentication</h3>
-            <code style="display:block; background:#e2e8f0; padding:10px; border-radius:12px;">Headers: { "X-API-Key": "YOUR_API_KEY" }</code>
+            <code style="display:block; background:#e2e8f0; padding:12px; border-radius:16px; margin:10px 0;">Headers: { "X-API-Key": "YOUR_API_KEY" }</code>
             <h3 style="color:#667eea; margin-top:15px;">📱 Endpoints</h3>
-            <code style="display:block; background:#e2e8f0; padding:10px; border-radius:12px;">GET /balance - Cek Saldo<br>POST /nokos/order - Order Virtual Number<br>GET /nokos/otp/{id} - Cek OTP<br>POST /smm/order - Order SMM<br>GET /services - Daftar Layanan</code>
-            <p style="margin-top:15px;">📞 Support: wa.me/628123456789 | Telegram: @aryastore</p>
+            <code style="display:block; background:#e2e8f0; padding:12px; border-radius:16px; margin:10px 0; white-space:pre-wrap;">
+GET /balance - Cek Saldo
+POST /nokos/order - Order Virtual Number
+GET /nokos/otp/{id} - Cek OTP
+POST /smm/order - Order SMM
+GET /services - Daftar Layanan
+            </code>
+            <p style="margin-top:15px;">📞 Support: <a href="https://wa.me/628123456789">wa.me/628123456789</a> | Telegram: @aryastore</p>
         </div>
     </div></div>
 
     <!-- Dashboard -->
     <div id="dashboard" class="dashboard">
         <div class="dashboard-container">
-            <!-- Header -->
+            <!-- Header Premium -->
             <div class="dashboard-header">
-                <div class="welcome-text">Selamat Datang,</div>
+                <div class="welcome-text">Selamat Datang Kembali,</div>
                 <div class="user-name" id="dashUsername">Arya</div>
                 <div class="balance-card-dash">
                     <div class="balance-label">💰 TOTAL SALDO</div>
                     <div class="balance-amount">Rp <span id="dashBalance">0</span></div>
-                    <div style="font-size:12px; margin-top:8px;">ID Member: #<span id="memberId">1779661357351</span></div>
+                    <div style="font-size:12px; margin-top:8px; opacity:0.8;">🆔 ID Member: #<span id="memberId">1779661357351</span></div>
                 </div>
             </div>
 
             <!-- Server Status -->
             <div class="server-status" id="serverStatus"></div>
 
-            <!-- Menu Grid -->
+            <!-- Menu Grid Premium -->
             <div class="menu-grid">
-                <div class="menu-card" onclick="switchTab('nokos')"><i class="fas fa-phone-alt"></i><h4>Virtual Number</h4><p>Beli nomor OTP</p></div>
+                <div class="menu-card" onclick="switchTab('order')"><i class="fas fa-phone-alt"></i><h4>Virtual Number</h4><p>Beli nomor OTP</p></div>
                 <div class="menu-card" onclick="switchTab('smm')"><i class="fas fa-chart-line"></i><h4>SMM Panel</h4><p>Social Media</p></div>
-                <div class="menu-card" onclick="switchTab('deposit')"><i class="fas fa-wallet"></i><h4>Top Up Saldo</h4><p>Deposit via QRIS</p></div>
+                <div class="menu-card" onclick="showDepositInfo()"><i class="fas fa-wallet"></i><h4>Top Up Saldo</h4><p>Deposit via QRIS</p></div>
                 <div class="menu-card" onclick="switchTab('profile')"><i class="fas fa-user"></i><h4>Profil Saya</h4><p>Informasi akun</p></div>
             </div>
 
             <!-- Section Layanan -->
-            <div class="section-title">📱 Layanan Virtual Number <span class="section-link" onclick="switchTab('nokos')">Lihat Semua →</span></div>
+            <div class="section-title">📱 Layanan Virtual Number <span class="section-link" onclick="switchTab('order')">Lihat Semua →</span></div>
             <div class="service-list-horizontal" id="homeServiceList"></div>
-
-            <!-- Order Section (Dynamic) -->
-            <div id="orderSection" style="display:none;" class="order-section"></div>
         </div>
 
-        <!-- Bottom Navigation -->
+        <!-- Bottom Navigation Premium -->
         <div class="bottom-nav">
-            <div class="nav-item active" data-page="home"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" data-page="order"><i class="fas fa-shopping-cart"></i><span>Order</span></div>
+            <div class="nav-item active" data-page="home"><i class="fas fa-home"></i><span>Beranda</span></div>
+            <div class="nav-item" data-page="order"><i class="fas fa-shopping-cart"></i><span>Pesan</span></div>
             <div class="nav-item" data-page="history"><i class="fas fa-history"></i><span>Riwayat</span></div>
             <div class="nav-item" data-page="profile"><i class="fas fa-user"></i><span>Profil</span></div>
         </div>
@@ -218,7 +233,20 @@
             <div class="section-title">📱 Pilih Layanan</div>
             <div class="service-list-horizontal" id="orderServiceGrid"></div>
             <div id="orderResultArea"></div>
-            <button class="btn-order" id="orderSubmitBtn" onclick="submitOrder()">Beli Nomor Sekarang</button>
+            <button class="btn-order" id="orderSubmitBtn" onclick="submitOrder()">💎 Beli Nomor Sekarang</button>
+        </div>
+    </div>
+    <div id="page-smm" style="display:none;">
+        <div class="dashboard-container">
+            <div class="section-title">📊 Social Media Marketing</div>
+            <div class="service-list-horizontal" id="smmServiceGrid"></div>
+            <div class="order-section">
+                <input type="text" id="smmTarget" class="auth-input" placeholder="Target Username/URL" style="margin-bottom:12px;">
+                <input type="number" id="smmQuantity" class="auth-input" placeholder="Jumlah" style="margin-bottom:12px;">
+                <div id="smmPriceInfo" style="margin:10px 0; padding:12px; background:#f1f5f9; border-radius:20px;"></div>
+                <button class="btn-order" onclick="submitSmmOrder()">✨ Order SMM Sekarang</button>
+                <div id="smmResultArea"></div>
+            </div>
         </div>
     </div>
     <div id="page-history" style="display:none;"><div class="dashboard-container"><div class="section-title">📋 Riwayat Transaksi</div><div class="activity-log" id="historyList"><div class="activity-item">Belum ada transaksi</div></div></div></div>
@@ -232,17 +260,17 @@
                 <div class="stat-card"><div class="stat-value" id="statRefund">Rp0</div><div class="stat-label">TOTAL REFUND</div></div>
             </div>
             <div class="api-key-box">
-                <div><i class="fas fa-key"></i> <strong>API Key (Untuk Integrasi)</strong></div>
-                <div class="api-key-value"><span id="profileApiKey">-</span><button class="copy-btn" onclick="copyApiKey()" style="background:#667eea; color:white; border:none; padding:5px 12px; border-radius:20px;">Salin</button></div>
-                <div style="font-size:11px; color:#64748b; margin-top:8px;">🔑 Gunakan API Key untuk mengakses endpoint integrasi. Simpan dengan aman!</div>
+                <div><i class="fas fa-key"></i> <strong>🔑 API Key (Integrasi Bot)</strong></div>
+                <div class="api-key-value"><span id="profileApiKey">-</span><button class="copy-btn" onclick="copyApiKey()">Salin</button></div>
+                <div style="font-size:11px; margin-top:8px; opacity:0.8;">Gunakan API Key untuk akses endpoint integrasi WhatsApp/Telegram Bot</div>
             </div>
-            <div class="info-box" style="background:#f1f5f9; border-radius:20px; padding:15px; margin-top:15px;">
-                <p><strong>Username:</strong> <span id="profileUsername"></span></p>
-                <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-                <p><strong>Status Akun:</strong> <span style="color:#10b981;">Aktif / Member</span></p>
-                <p><strong>Bergabung:</strong> <span id="joinDate">25 Mei 2026</span></p>
+            <div class="info-box" style="background:white; border-radius:24px; padding:20px; margin-top:15px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                <p style="margin:8px 0;"><strong>👤 Username:</strong> <span id="profileUsername"></span></p>
+                <p style="margin:8px 0;"><strong>📧 Email:</strong> <span id="profileEmail"></span></p>
+                <p style="margin:8px 0;"><strong>✅ Status:</strong> <span style="color:#10b981;">Aktif / Premium Member</span></p>
+                <p style="margin:8px 0;"><strong>📅 Bergabung:</strong> <span id="joinDate">25 Mei 2026</span></p>
             </div>
-            <button class="btn-order" onclick="logout()" style="background:#ef4444; margin-top:20px;">Keluar Sekarang</button>
+            <button class="btn-order" onclick="logout()" style="background:#ef4444; margin-top:20px;">🚪 Keluar Akun</button>
         </div>
     </div>
 
@@ -251,10 +279,8 @@
         let selectedServer = null;
         let selectedCountry = 'id';
         let selectedService = null;
-        let currentOrder = null;
-        let currentPage = 'home';
+        let selectedSmmService = null;
 
-        // Data
         const countries = [
             { code: "id", name: "Indonesia", flag: "🇮🇩", price: 2500 },
             { code: "us", name: "USA", flag: "🇺🇸", price: 5000 },
@@ -270,27 +296,36 @@
             { id: 4, name: "Instagram", icon: "fab fa-instagram", price: 2800 }
         ];
 
+        const smmServices = [
+            { id: 101, name: "Instagram Followers", price: 25000, min: 100, icon: "fab fa-instagram" },
+            { id: 102, name: "Instagram Likes", price: 5000, min: 50, icon: "fab fa-instagram" },
+            { id: 201, name: "TikTok Followers", price: 30000, min: 100, icon: "fab fa-tiktok" },
+            { id: 202, name: "TikTok Likes", price: 7000, min: 50, icon: "fab fa-tiktok" },
+            { id: 301, name: "Facebook Followers", price: 20000, min: 100, icon: "fab fa-facebook" }
+        ];
+
         function generateApiKey(username) { return 'aryastore_' + username + '_' + Math.random().toString(36).substring(2, 10) + Math.floor(Math.random()*10000); }
         function getUsers() { return JSON.parse(localStorage.getItem('aryastore_users') || '[]'); }
         function saveUsers(users) { localStorage.setItem('aryastore_users', JSON.stringify(users)); }
 
         function openLoginModal() { document.getElementById('authModal').style.display = 'flex'; showLoginForm(); }
         function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
-        function showLoginForm() { document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; document.getElementById('authTitle').innerText = 'Login ARYA STORE'; }
-        function showRegisterForm() { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; document.getElementById('authTitle').innerText = 'Daftar Akun'; }
-        function showApiDocsLanding() { document.getElementById('apiDocsModal').style.display = 'flex'; }
+        function showLoginForm() { document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; document.getElementById('authTitle').innerText = '✨ Login ARYA STORE'; }
+        function showRegisterForm() { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; document.getElementById('authTitle').innerText = '✨ Daftar Akun'; }
+        function showApiDocs() { document.getElementById('apiDocsModal').style.display = 'flex'; }
         function closeApiDocsModal() { document.getElementById('apiDocsModal').style.display = 'none'; }
         function scrollToSection(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
+        function showDepositInfo() { alert('💳 TOP UP SALDO\n\nTransfer ke rekening berikut:\n\n🏦 BCA: 1234567890 a.n ARYA STORE\n🏦 Mandiri: 9876543210 a.n ARYA STORE\n\n📱 QRIS: Tersedia di menu Deposit\n\nMinimal Deposit: Rp10.000\nKonfirmasi ke Admin: wa.me/628123456789'); }
 
         function handleRegister() {
             const username = document.getElementById('regUsername').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
-            if (!username || !email || !password || password.length < 6) { document.getElementById('authAlert').innerHTML = '<div class="alert-error">Isi semua field! Password min 6 karakter</div>'; return; }
+            if (!username || !email || !password || password.length < 6) { document.getElementById('authAlert').innerHTML = '<div class="alert-error">❌ Isi semua field! Password min 6 karakter</div>'; return; }
             const users = getUsers();
-            if (users.find(u => u.username === username)) { document.getElementById('authAlert').innerHTML = '<div class="alert-error">Username sudah terdaftar!</div>'; return; }
+            if (users.find(u => u.username === username)) { document.getElementById('authAlert').innerHTML = '<div class="alert-error">❌ Username sudah terdaftar!</div>'; return; }
             const apiKey = generateApiKey(username);
-            users.push({ id: Date.now(), username, email, password, balance: 0, orders: [], totalDeposit: 0, totalRefund: 0, apiKey, joinDate: new Date().toLocaleDateString('id-ID') });
+            users.push({ id: Date.now(), username, email, password, balance: 0, orders: [], smmOrders: [], totalDeposit: 0, totalRefund: 0, apiKey, joinDate: new Date().toLocaleDateString('id-ID') });
             saveUsers(users);
             document.getElementById('authAlert').innerHTML = '<div class="alert-success">✅ Registrasi berhasil! Silakan login.</div>';
             setTimeout(() => showLoginForm(), 1500);
@@ -317,7 +352,7 @@
             document.getElementById('dashUsername').innerText = currentUser.username;
             document.getElementById('memberId').innerText = currentUser.id || '1779661357351';
             document.getElementById('statBalance').innerHTML = `Rp${currentUser.balance.toLocaleString()}`;
-            document.getElementById('statOrder').innerText = (currentUser.orders || []).length;
+            document.getElementById('statOrder').innerText = (currentUser.orders || []).length + (currentUser.smmOrders || []).length;
             document.getElementById('statDeposit').innerHTML = `Rp${(currentUser.totalDeposit || 0).toLocaleString()}`;
             document.getElementById('statRefund').innerHTML = `Rp${(currentUser.totalRefund || 0).toLocaleString()}`;
             document.getElementById('profileUsername').innerText = currentUser.username;
@@ -325,23 +360,22 @@
             document.getElementById('profileApiKey').innerText = currentUser.apiKey || generateApiKey(currentUser.username);
             document.getElementById('joinDate').innerText = currentUser.joinDate || '25 Mei 2026';
             
-            // Server Status
             document.getElementById('serverStatus').innerHTML = `
-                <div class="server-card-status"><strong>Server 1</strong><br><span class="status-maintenance">🔧 MAINTENANCE</span></div>
-                <div class="server-card-status"><strong>Server 2</strong><br><span class="status-online">✅ ONLINE</span></div>
-                <div class="server-card-status"><strong>Server 3</strong><br><span class="status-online">✅ ONLINE</span></div>
-                <div class="server-card-status"><strong>Server 4</strong><br><span class="status-online">✅ ONLINE</span></div>
-                <div class="server-card-status"><strong>Server 5-10</strong><br><span class="status-online">✅ ONLINE</span></div>
+                <div class="server-card-status"><strong>🔥 Server 1</strong><br><span class="status-maintenance">🔧 MAINTENANCE</span></div>
+                <div class="server-card-status"><strong>⚡ Server 2</strong><br><span class="status-online">✅ ONLINE</span></div>
+                <div class="server-card-status"><strong>🚀 Server 3</strong><br><span class="status-online">✅ ONLINE</span></div>
+                <div class="server-card-status"><strong>💎 Server 4</strong><br><span class="status-online">✅ ONLINE</span></div>
+                <div class="server-card-status"><strong>🌟 Server 5-10</strong><br><span class="status-online">✅ ONLINE</span></div>
             `;
             
-            // Home Service List
             const homeContainer = document.getElementById('homeServiceList');
             homeContainer.innerHTML = '';
-            nokosServices.slice(0,4).forEach(s => {
+            nokosServices.forEach(s => {
                 homeContainer.innerHTML += `<div class="service-item-card" onclick="switchTab('order')"><i class="${s.icon}"></i><div><strong>${s.name}</strong></div><div class="price">Rp ${s.price.toLocaleString()}</div></div>`;
             });
             
             renderOrderPage();
+            renderSmmPage();
             renderHistory();
             showPage('home');
         }
@@ -350,14 +384,15 @@
             const serverContainer = document.getElementById('orderServerGrid');
             serverContainer.innerHTML = '';
             for(let i=1;i<=10;i++) {
+                const isActive = selectedServer === i;
                 const isDisabled = i === 1;
-                serverContainer.innerHTML += `<div class="server-card-status ${selectedServer === i ? 'active' : ''}" style="cursor:pointer; ${selectedServer === i ? 'background:linear-gradient(135deg, #667eea, #764ba2); color:white;' : ''}" onclick="selectServer(${i})">Server ${i}${isDisabled ? '<br><small>Maintenance</small>' : ''}</div>`;
+                serverContainer.innerHTML += `<div class="server-card-status ${isActive ? 'active' : ''}" style="cursor:pointer; ${isActive ? 'background:linear-gradient(135deg, #667eea, #764ba2); color:white;' : ''}" onclick="selectServer(${i})">Server ${i}${isDisabled ? '<br><small>🔧 Maintenance</small>' : ''}</div>`;
             }
             
             const countryContainer = document.getElementById('orderCountryGrid');
             countryContainer.innerHTML = '';
             countries.forEach(c => {
-                countryContainer.innerHTML += `<div class="service-item-card ${selectedCountry === c.code ? 'selected' : ''}" onclick="selectCountry('${c.code}')">${c.flag} ${c.name}<br><small>Rp ${c.price}</small></div>`;
+                countryContainer.innerHTML += `<div class="service-item-card ${selectedCountry === c.code ? 'selected' : ''}" onclick="selectCountry('${c.code}')">${c.flag} ${c.name}<br><small>Rp ${c.price.toLocaleString()}</small></div>`;
             });
             
             renderOrderServices();
@@ -372,33 +407,42 @@
             });
         }
 
-        function selectServer(server) { if(server === 1) { alert('Server 1 maintenance!'); return; } selectedServer = server; renderOrderPage(); }
+        function renderSmmPage() {
+            const container = document.getElementById('smmServiceGrid');
+            container.innerHTML = '';
+            smmServices.forEach(s => {
+                container.innerHTML += `<div class="service-item-card ${selectedSmmService === s.id ? 'selected' : ''}" onclick="selectSmmService(${s.id}, '${s.name}', ${s.price})"><i class="${s.icon}"></i><div><strong>${s.name}</strong></div><div class="price">Rp ${s.price.toLocaleString()}</div><small>Min: ${s.min}</small></div>`;
+            });
+        }
+
+        function selectServer(server) { if(server === 1) { alert('Server 1 sedang maintenance!'); return; } selectedServer = server; renderOrderPage(); }
         function selectCountry(code) { selectedCountry = code; renderOrderPage(); }
         function selectService(id) { selectedService = id; renderOrderServices(); }
+        function selectSmmService(id, name, price) { selectedSmmService = { id, name, price }; document.getElementById('smmPriceInfo').innerHTML = `<strong>${name}</strong><br>Harga: Rp ${price.toLocaleString()} / unit<br>Minimal order: ${smmServices.find(s=>s.id===id)?.min || 10}`; renderSmmPage(); }
 
         async function submitOrder() {
             if(!selectedServer) { alert('Pilih server!'); return; }
             if(!selectedService) { alert('Pilih layanan!'); return; }
             const countryData = countries.find(c => c.code === selectedCountry);
             const price = countryData.price;
-            if(currentUser.balance < price) { alert(`Saldo tidak cukup! Deposit dulu Rp ${(price - currentUser.balance).toLocaleString()}`); return; }
+            if(currentUser.balance < price) { alert(`Saldo tidak cukup! Deposit dulu minimal Rp ${(price - currentUser.balance).toLocaleString()}`); return; }
             
             const resultDiv = document.getElementById('orderResultArea');
-            resultDiv.innerHTML = '<div class="loading"></div> Memproses order...';
+            resultDiv.innerHTML = '<div class="loading"></div> 🔄 Memproses order...';
             document.getElementById('orderSubmitBtn').disabled = true;
             
             await new Promise(r => setTimeout(r, 1500));
             const virtualNum = '62' + Math.floor(8e10 + Math.random() * 9e10).toString().slice(0,12);
-            const orderId = 'ORD' + Date.now();
+            const orderId = 'ARY' + Date.now();
             const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
             
             currentUser.balance -= price;
-            const orderData = { id: orderId, server: selectedServer, country: countryData.name, service: nokosServices.find(s=>s.id===selectedService)?.name, phone: virtualNum, price: price, status: 'pending', otp: null, time: new Date().toISOString() };
+            const orderData = { id: orderId, type: 'nokos', server: selectedServer, country: countryData.name, service: nokosServices.find(s=>s.id===selectedService)?.name, phone: virtualNum, price: price, status: 'pending', otp: null, time: new Date().toISOString() };
             if(!currentUser.orders) currentUser.orders = [];
             currentUser.orders.unshift(orderData);
             updateCurrentUser();
             
-            resultDiv.innerHTML = `<div class="virtual-number-box"><i class="fas fa-phone-alt"></i><h2>${virtualNum}</h2><p>Order ID: ${orderId}</p><div class="loading"></div><small>Menunggu OTP (60 detik)</small></div>`;
+            resultDiv.innerHTML = `<div class="virtual-number-box"><i class="fas fa-phone-alt"></i><h2>${virtualNum}</h2><p>Order ID: ${orderId}</p><div class="loading"></div><small>⏳ Menunggu OTP masuk (maksimal 60 detik)</small></div>`;
             
             let attempts = 0;
             const interval = setInterval(() => {
@@ -409,8 +453,8 @@
                         orderData.status = 'success';
                         orderData.otp = otpCode;
                         updateCurrentUser();
-                        resultDiv.innerHTML = `<div class="success-box"><i class="fas fa-check-circle"></i><h2>${otpCode}</h2><p>✅ OTP BERHASIL! Kode: ${otpCode}</p><p>Nomor: ${virtualNum}</p></div>`;
-                        addHistory(`✅ Order #${orderId}: ${orderData.service} - ${virtualNum} - OTP: ${otpCode}`, 'success');
+                        resultDiv.innerHTML = `<div class="success-box"><i class="fas fa-check-circle"></i><h2>${otpCode}</h2><p>✅ OTP BERHASIL! Kode verifikasi: ${otpCode}</p><p>📱 Nomor: ${virtualNum}</p></div>`;
+                        addHistory(`✅ Order #${orderId}: ${orderData.service} (${countryData.name}) - ${virtualNum} - OTP: ${otpCode}`, 'success');
                     }
                 } else {
                     clearInterval(interval);
@@ -418,7 +462,7 @@
                     currentUser.totalRefund = (currentUser.totalRefund || 0) + price;
                     orderData.status = 'failed';
                     updateCurrentUser();
-                    resultDiv.innerHTML = `<div class="failed-box"><i class="fas fa-times-circle"></i><h2>OTP GAGAL!</h2><p>💰 Auto refund Rp ${price.toLocaleString()} ke saldo Anda</p></div>`;
+                    resultDiv.innerHTML = `<div class="failed-box"><i class="fas fa-times-circle"></i><h2>OTP GAGAL!</h2><p>💰 Auto refund Rp ${price.toLocaleString()} ke saldo Anda</p><p>🔄 Silakan coba order ulang dengan server berbeda</p></div>`;
                     addHistory(`❌ Order #${orderId}: GAGAL - Refund Rp ${price.toLocaleString()}`, 'error');
                 }
             }, 5000);
@@ -427,10 +471,34 @@
             updateDashboardStats();
         }
 
+        async function submitSmmOrder() {
+            if(!selectedSmmService) { alert('Pilih layanan SMM!'); return; }
+            const target = document.getElementById('smmTarget').value;
+            const quantity = parseInt(document.getElementById('smmQuantity').value);
+            if(!target) { alert('Masukkan target username/URL!'); return; }
+            if(!quantity || quantity < 10) { alert('Minimal order 10!'); return; }
+            const totalPrice = selectedSmmService.price * quantity;
+            if(currentUser.balance < totalPrice) { alert(`Saldo tidak cukup! Butuh Rp ${totalPrice.toLocaleString()}`); return; }
+            
+            currentUser.balance -= totalPrice;
+            const orderId = 'SMM' + Date.now();
+            const smmOrder = { id: orderId, type: 'smm', service: selectedSmmService.name, target, quantity, price: totalPrice, status: 'processing', time: new Date().toISOString() };
+            if(!currentUser.smmOrders) currentUser.smmOrders = [];
+            currentUser.smmOrders.unshift(smmOrder);
+            updateCurrentUser();
+            
+            document.getElementById('smmResultArea').innerHTML = `<div class="success-box"><i class="fas fa-check-circle"></i><p>✅ Order SMM berhasil!</p><p>Order ID: ${orderId}</p><p>Target: ${target} | Jumlah: ${quantity}</p><p>Total: Rp ${totalPrice.toLocaleString()} | Status: Processing (1-24 jam)</p></div>`;
+            addHistory(`📊 SMM Order #${orderId}: ${selectedSmmService.name} - ${target} - ${quantity} pcs - Rp ${totalPrice.toLocaleString()}`, 'success');
+            setTimeout(() => document.getElementById('smmResultArea').innerHTML = '', 5000);
+            document.getElementById('smmTarget').value = '';
+            document.getElementById('smmQuantity').value = '';
+            updateDashboardStats();
+        }
+
         function updateDashboardStats() {
             document.getElementById('dashBalance').innerText = currentUser.balance.toLocaleString();
             document.getElementById('statBalance').innerHTML = `Rp${currentUser.balance.toLocaleString()}`;
-            document.getElementById('statOrder').innerText = (currentUser.orders || []).length;
+            document.getElementById('statOrder').innerText = (currentUser.orders || []).length + (currentUser.smmOrders || []).length;
             document.getElementById('statDeposit').innerHTML = `Rp${(currentUser.totalDeposit || 0).toLocaleString()}`;
             document.getElementById('statRefund').innerHTML = `Rp${(currentUser.totalRefund || 0).toLocaleString()}`;
         }
@@ -452,28 +520,24 @@
             const historyList = document.getElementById('historyList');
             if(!historyList) return;
             historyList.innerHTML = '';
-            if(currentUser.orders && currentUser.orders.length > 0) {
-                currentUser.orders.forEach(o => {
-                    const statusText = o.status === 'success' ? '✅' : (o.status === 'failed' ? '❌' : '⏳');
-                    historyList.innerHTML += `<div class="activity-item">${statusText} [${new Date(o.time).toLocaleString()}] ${o.service} - ${o.phone} - Rp ${o.price?.toLocaleString()} ${o.otp ? '- OTP: '+o.otp : ''}</div>`;
+            const allOrders = [...(currentUser.orders || []), ...(currentUser.smmOrders || [])].sort((a,b) => new Date(b.time) - new Date(a.time));
+            if(allOrders.length > 0) {
+                allOrders.forEach(o => {
+                    const statusText = o.status === 'success' ? '✅' : (o.status === 'failed' ? '❌' : (o.status === 'processing' ? '⏳' : '📌'));
+                    const detail = o.phone ? `📱 ${o.phone}` : `🎯 ${o.target}`;
+                    historyList.innerHTML += `<div class="activity-item">${statusText} [${new Date(o.time).toLocaleString()}] ${o.service} - ${detail} - Rp ${o.price?.toLocaleString()} ${o.otp ? '- 🔑 OTP: '+o.otp : ''}</div>`;
                 });
-            } else { historyList.innerHTML = '<div class="activity-item">Belum ada transaksi</div>'; }
+            } else { historyList.innerHTML = '<div class="activity-item">✨ Belum ada transaksi</div>'; }
         }
 
-        function copyApiKey() { const key = document.getElementById('profileApiKey').innerText; navigator.clipboard.writeText(key); alert('API Key disalin!'); }
+        function copyApiKey() { const key = document.getElementById('profileApiKey').innerText; navigator.clipboard.writeText(key); alert('🔑 API Key berhasil disalin!'); }
 
-        function switchTab(tab) {
-            if(tab === 'deposit') {
-                alert('💳 Fitur Deposit: Silakan transfer ke rekening ARYA STORE\n\nBank BCA: 1234567890 a.n ARYA STORE\nBank Mandiri: 9876543210 a.n ARYA STORE\nQRIS: Scan QRIS yang tersedia\n\nMinimal Deposit: Rp10.000\nKonfirmasi ke Admin: wa.me/628123456789');
-                return;
-            }
-            showPage(tab);
-        }
+        function switchTab(tab) { showPage(tab); }
 
         function showPage(page) {
-            currentPage = page;
             document.getElementById('page-home').style.display = page === 'home' ? 'block' : 'none';
             document.getElementById('page-order').style.display = page === 'order' ? 'block' : 'none';
+            document.getElementById('page-smm').style.display = page === 'smm' ? 'block' : 'none';
             document.getElementById('page-history').style.display = page === 'history' ? 'block' : 'none';
             document.getElementById('page-profile').style.display = page === 'profile' ? 'block' : 'none';
             
@@ -484,6 +548,7 @@
             
             if(page === 'history') renderHistory();
             if(page === 'order') renderOrderPage();
+            if(page === 'smm') renderSmmPage();
             if(page === 'profile') updateDashboardStats();
         }
 
