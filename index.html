@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>XYRO OTP | Auto Deposit QRIS | API SMM & Nokos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+        /* Landing Page */
+        .landing-page { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; flex-wrap: wrap; gap: 20px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { background: white; width: 45px; height: 45px; border-radius: 25px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #667eea; order: 2; }
+        .logo-text { order: 1; }
+        .logo h1 { color: white; font-size: 1.8rem; }
+        .logo p { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
+        .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; cursor: pointer; }
+        .btn-login-nav { background: white; color: #667eea !important; padding: 10px 25px; border-radius: 30px; font-weight: 600 !important; }
+        .hero { display: flex; align-items: center; justify-content: space-between; padding: 60px 50px; flex-wrap: wrap; gap: 40px; }
+        .hero-content { flex: 1; color: white; }
+        .hero-content h1 { font-size: 3rem; margin-bottom: 20px; }
+        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 30px; }
+        .btn-primary { background: white; color: #667eea; padding: 12px 30px; border-radius: 40px; font-weight: 700; border: none; cursor: pointer; }
+        .btn-outline { border: 2px solid white; color: white; padding: 12px 30px; border-radius: 40px; background: transparent; cursor: pointer; }
+        .hero-image { flex: 1; text-align: center; }
+        .hero-image i { font-size: 200px; color: rgba(255,255,255,0.9); }
+        .features { background: white; padding: 60px 50px; text-align: center; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .feature-card { padding: 30px; border-radius: 24px; background: #f8fafc; transition: 0.3s; }
+        .feature-card i { font-size: 50px; color: #667eea; margin-bottom: 20px; }
+        .footer { background: #1a1a2e; color: white; text-align: center; padding: 40px; }
+
+        /* Payment Info Box */
+        .payment-info { background: linear-gradient(135deg, #1a1a2e, #2d2d5e); border-radius: 24px; padding: 25px; margin: 30px auto; max-width: 500px; text-align: center; border: 1px solid #00ff88; }
+        .payment-info h3 { color: #00ff88; margin-bottom: 15px; }
+        .payment-detail { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; margin: 10px 0; font-family: monospace; }
+        .payment-detail i { margin-right: 10px; color: #00ff88; }
+        .warning-text { color: #fbbf24; font-size: 12px; margin-top: 10px; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; border-radius: 32px; padding: 35px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+        .auth-input { width: 100%; padding: 14px 18px; border: 2px solid #e2e8f0; border-radius: 24px; font-size: 16px; margin-bottom: 16px; }
+        .auth-input:focus { outline: none; border-color: #667eea; }
+        .auth-btn { width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px; border-radius: 32px; font-weight: 700; cursor: pointer; }
+        .close-modal { float: right; font-size: 24px; cursor: pointer; }
+        .alert-error { background: #ef4444; color: white; padding: 12px; border-radius: 20px; margin-bottom: 15px; text-align: center; }
+        .alert-success { background: #10b981; color: white; padding: 12px; border-radius: 20px; margin-bottom: 15px; text-align: center; }
+
+        /* Dashboard */
+        .dashboard { display: none; background: #f0f2f5; min-height: 100vh; }
+        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .top-bar { background: white; border-radius: 24px; padding: 15px 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .dashboard-logo { display: flex; align-items: center; gap: 12px; }
+        .dashboard-logo-icon { background: linear-gradient(135deg, #667eea, #764ba2); width: 45px; height: 45px; border-radius: 25px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; order: 2; }
+        .dashboard-logo-text { order: 1; }
+        .balance-card { background: linear-gradient(135deg, #667eea, #764ba2); padding: 10px 25px; border-radius: 40px; color: white; font-weight: 700; }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 8px 20px; border-radius: 30px; cursor: pointer; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tab-btn { background: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer; font-weight: 600; color: #4a5568; transition: 0.3s; }
+        .tab-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        
+        .server-grid, .country-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .server-card, .country-card { background: white; border-radius: 20px; padding: 18px; text-align: center; cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
+        .server-card.active, .country-card.active { border-color: #667eea; background: linear-gradient(135deg, #667eea10, #764ba210); }
+        .smm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .smm-card { background: white; border-radius: 20px; padding: 18px; text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid #e2e8f0; }
+        .smm-card.selected { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .service-card { background: white; border-radius: 20px; padding: 18px; cursor: pointer; text-align: center; transition: 0.3s; border: 1px solid #e2e8f0; }
+        .service-card.selected { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        
+        .order-section { background: white; border-radius: 24px; padding: 25px; margin-top: 20px; }
+        .info-box { background: #fef3c7; padding: 20px; border-radius: 20px; text-align: center; margin: 15px 0; }
+        .info-box h2 { font-size: 1.5rem; color: #d97706; font-family: monospace; }
+        .success-box { background: #10b981; color: white; padding: 20px; border-radius: 20px; text-align: center; margin: 15px 0; }
+        .failed-box { background: #ef4444; color: white; padding: 20px; border-radius: 20px; text-align: center; margin: 15px 0; }
+        .btn-order { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 15px; border-radius: 40px; font-weight: 700; cursor: pointer; }
+        
+        .api-doc { background: #1a1a2e; border-radius: 24px; padding: 25px; color: white; margin-top: 20px; }
+        .api-doc h3 { color: #00ff88; margin-bottom: 15px; }
+        .api-doc code { background: #0f0f1a; padding: 15px; border-radius: 16px; display: block; font-family: monospace; font-size: 12px; overflow-x: auto; margin: 10px 0; color: #00ff88; white-space: pre-wrap; }
+        .api-key-display { background: #0f0f1a; padding: 10px 15px; border-radius: 20px; font-family: monospace; font-size: 14px; margin: 10px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .copy-btn { background: #667eea; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; color: white; }
+        .activity-log { background: white; border-radius: 20px; padding: 20px; max-height: 400px; overflow-y: auto; }
+        .activity-item { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #e2e8f0; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .deposit-area { text-align: center; }
+        #qrcodeDeposit { display: inline-flex; justify-content: center; padding: 15px; background: white; border-radius: 20px; margin: 20px 0; }
+        
+        @media (max-width: 768px) { .navbar, .hero { padding: 20px; } .hero-content h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landingPage" class="landing-page">
+        <div class="navbar">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+                <div class="logo-text"><h1>XYRO OTP</h1><p>API SMM & Nokos Global</p></div>
+            </div>
+            <div class="nav-links"><a onclick="scrollToSection('home')">Beranda</a><a onclick="scrollToSection('features')">Fitur</a><a onclick="showApiDocsLanding()">Docs API</a><a class="btn-login-nav" onclick="openLoginModal()">Login</a></div>
+        </div>
+        <div class="hero">
+            <div class="hero-content"><h1>Auto Deposit QRIS<br>API SMM & Nokos</h1><p>Platform lengkap OTP semua negara + SMM Panel + Virtual Number dengan API Real</p>
+                <div class="hero-buttons"><button class="btn-primary" onclick="openLoginModal()">PESAN SEKARANG</button><button class="btn-outline" onclick="showApiDocsLanding()">DOCS API</button></div>
+            </div>
+            <div class="hero-image"><i class="fas fa-globe-asia"></i></div>
+        </div>
+
+        <!-- Payment Info Box -->
+        <div class="payment-info">
+            <h3><i class="fas fa-info-circle"></i> INFO PEMBAYARAN</h3>
+            <div class="payment-detail"><i class="fab fa-whatsapp"></i> 0838-0538-5608</div>
+            <div class="payment-detail"><i class="fab fa-telegram"></i> @heyyarya122</div>
+            <div class="payment-detail"><i class="fas fa-store"></i> STORE ID: ARYASTOREID</div>
+            <div class="payment-detail"><i class="fas fa-user"></i> A/N: ARYASTORE</div>
+            <div class="warning-text"><i class="fas fa-exclamation-triangle"></i> JANGAN LUPA SERTAKAN BUKTI PEMBAYARANNYA!</div>
+        </div>
+
+        <div class="features" id="features"><h2>Fitur Unggulan</h2>
+            <div class="feature-grid">
+                <div class="feature-card"><i class="fas fa-qrcode"></i><h3>Auto Deposit QRIS</h3><p>Scan QRIS, saldo auto masuk</p></div>
+                <div class="feature-card"><i class="fas fa-code"></i><h3>REST API Lengkap</h3><p>SMM + Nokos + OTP</p></div>
+                <div class="feature-card"><i class="fas fa-chart-line"></i><h3>SMM Panel</h3><p>Followers, Likes, Views</p></div>
+                <div class="feature-card"><i class="fas fa-phone-alt"></i><h3>Virtual Number</h3><p>Nomor sementara untuk OTP</p></div>
+            </div>
+        </div>
+        <div class="footer"><p>&copy; 2024 XYRO OTP | API SMM | API Nokos | Auto Deposit QRIS | Support All Countries</p></div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeAuthModal()">&times;</span><div class="modal-header"><h2 id="authTitle">Login XYRO OTP</h2></div><div id="authAlert"></div>
+        <div id="loginForm"><input type="text" id="loginUsername" class="auth-input" placeholder="Username"><input type="password" id="loginPassword" class="auth-input" placeholder="Password"><button class="auth-btn" onclick="handleLogin()">Login</button><div style="text-align:center; margin-top:15px;">Belum punya akun? <a onclick="showRegisterForm()" style="color:#667eea; cursor:pointer;">Daftar</a></div></div>
+        <div id="registerForm" style="display:none;"><input type="text" id="regUsername" class="auth-input" placeholder="Username"><input type="email" id="regEmail" class="auth-input" placeholder="Email"><input type="password" id="regPassword" class="auth-input" placeholder="Password (min 6)"><button class="auth-btn" onclick="handleRegister()">Daftar</button><div style="text-align:center; margin-top:15px;">Sudah punya akun? <a onclick="showLoginForm()" style="color:#667eea; cursor:pointer;">Login</a></div></div>
+    </div></div>
+
+    <!-- API Docs Modal -->
+    <div id="apiDocsModal" class="modal"><div class="modal-content" style="max-width: 750px;"><span class="close-modal" onclick="closeApiDocsModal()">&times;</span><div class="modal-header"><h2><i class="fas fa-code"></i> API Documentation XYRO OTP</h2></div>
+        <div class="api-doc" style="background:#f8fafc; color:#1a1a2e; margin-top:0;">
+            <h3 style="color:#667eea;">🌐 Base URL API</h3>
+            <code>https://xyro-otp.api/v1</code>
+            <h3 style="color:#667eea;">🔑 Authentication</h3>
+            <code>Headers: { "X-API-Key": "YOUR_API_KEY", "Content-Type": "application/json" }</code>
+            <h3 style="color:#667eea; margin-top:20px;">📱 API Nokos (Virtual Number)</h3>
+            <code>POST /nokos/order
+Body: {"country":"id","service":"whatsapp"}
+Response: {"order_id":"NOK123","phone":"628123456789"}</code>
+            <h3 style="color:#667eea; margin-top:20px;">📊 API SMM</h3>
+            <code>POST /smm/order
+Body: {"service":"instagram_followers","target":"username","quantity":1000}</code>
+            <p style="margin-top:20px;">📞 Support: 0838-0538-5608 | Telegram: @heyyarya122</p>
+        </div>
+    </div></div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard"><div class="dashboard-container">
+        <div class="top-bar">
+            <div class="dashboard-logo">
+                <div class="dashboard-logo-icon"><i class="fas fa-bolt"></i></div>
+                <div class="dashboard-logo-text"><h2 style="font-size:1.3rem;">XYRO OTP</h2><small>API SMM & Nokos</small></div>
+            </div>
+            <div style="display:flex; gap:15px; align-items:center;"><div class="balance-card">💰 Saldo: Rp <span id="dashBalance">0</span></div><button class="logout-btn" onclick="logout()">Logout</button></div>
+        </div>
+
+        <div class="nav-tabs"><button class="tab-btn active" data-tab="home">🏠 Home</button><button class="tab-btn" data-tab="deposit">💳 Deposit QRIS</button><button class="tab-btn" data-tab="nokos">📱 Virtual Number</button><button class="tab-btn" data-tab="smm">📊 SMM Panel</button><button class="tab-btn" data-tab="api">🔑 API Key</button><button class="tab-btn" data-tab="history">📋 History</button><button class="tab-btn" data-tab="profile">👤 Profile</button></div>
+
+        <!-- Home Tab -->
+        <div id="tab-home" class="tab-content"><div style="background:linear-gradient(135deg, #667eea, #764ba2); border-radius:24px; padding:30px; color:white; margin-bottom:25px;"><h2>XYRO OTP - Complete API Platform</h2><p>API Nokos (Virtual Number) | API SMM | Auto Deposit QRIS</p><button class="btn-primary" style="background:white; color:#667eea; margin-top:15px;" onclick="switchTab('nokos')">Order Virtual Number</button><button class="btn-outline" style="border-color:white; color:white; margin-left:10px;" onclick="switchTab('smm')">Order SMM</button></div>
+        <div class="activity-log"><h3>📢 Info Kontak</h3><div class="activity-item">📞 WhatsApp: 0838-0538-5608</div><div class="activity-item">📱 Telegram: @heyyarya122</div><div class="activity-item">🏪 Store ID: ARYASTOREID</div><div class="activity-item">👤 A/N: ARYASTORE</div></div></div>
+
+        <!-- Deposit QRIS Tab -->
+        <div id="tab-deposit" class="tab-content" style="display:none;"><div style="background:white; border-radius:24px; padding:25px; text-align:center;"><h3>Deposit Saldo via QRIS</h3><p>Minimal: Rp 10.000 | Auto detect pembayaran</p><div id="qrcodeDeposit"></div><input type="number" id="depositAmount" class="auth-input" placeholder="Nominal Deposit" style="margin:15px 0;"><button class="btn-primary" onclick="generateQRIS()">Generate QRIS</button><div id="depositMsg" style="margin-top:15px;"></div><div id="countdownTimer" style="margin-top:10px;"></div></div></div>
+
+        <!-- Nokos Tab -->
+        <div id="tab-nokos" class="tab-content" style="display:none;"><div style="background:white; border-radius:24px; padding:25px;"><h3>📱 Virtual Number (Nokos)</h3><div class="server-grid" id="serverGridNokos"></div><div class="country-grid" id="countryGridNokos"></div><div class="service-grid" id="nokosServiceGrid"></div><div class="order-section"><div id="nokosOrderLoading" style="display:none; text-align:center; padding:20px;"><div class="loading"></div> Memproses order...</div><div id="nokosOrderResult"></div><button id="nokosOrderBtn" class="btn-order" onclick="placeNokosOrder()">Order Virtual Number</button></div></div></div>
+
+        <!-- SMM Tab -->
+        <div id="tab-smm" class="tab-content" style="display:none;"><div style="background:white; border-radius:24px; padding:25px;"><h3>📊 Social Media Marketing (API SMM)</h3><div class="smm-grid" id="smmCategoryGrid"></div><div id="smmServiceGrid" class="service-grid"></div><div class="order-section"><input type="text" id="smmTarget" class="auth-input" placeholder="Target (Username/URL/ID)"><input type="number" id="smmQuantity" class="auth-input" placeholder="Jumlah"><div id="smmPriceInfo" style="margin:10px 0; padding:10px; background:#f1f5f9; border-radius:16px;"></div><button class="btn-order" onclick="placeSmmOrder()">Order SMM Sekarang</button><div id="smmOrderResult"></div></div></div></div>
+
+        <!-- API Tab -->
+        <div id="tab-api" class="tab-content" style="display:none;"><div class="api-doc"><h3><i class="fas fa-key"></i> API Key Pribadi Anda</h3><div class="api-key-display"><span id="dashboardApiKey" style="color:#00ff88;">-</span><button class="copy-btn" onclick="copyDashboardApiKey()">Salin API Key</button></div>
+        <h3>🌐 Base URL</h3><code>https://xyro-otp.api/v1</code>
+        <h3>📱 API Nokos</h3><code>POST /nokos/order - Order nomor virtual</code>
+        <h3>📊 API SMM</h3><code>POST /smm/order - Order SMM</code>
+        <h3>💰 API Balance</h3><code>GET /balance - Cek saldo</code></div></div>
+
+        <!-- History Tab -->
+        <div id="tab-history" class="tab-content" style="display:none;"><div class="activity-log" id="historyList"><div class="activity-item">Belum ada transaksi</div></div></div>
+
+        <!-- Profile Tab -->
+        <div id="tab-profile" class="tab-content" style="display:none;"><div style="background:white; border-radius:24px; padding:25px;"><h3>Profil Saya</h3><p><strong>Username:</strong> <span id="profileUsername"></span></p><p><strong>Email:</strong> <span id="profileEmail"></span></p><p><strong>Total Deposit:</strong> Rp <span id="profileTotalDeposit">0</span></p><p><strong>Total Order:</strong> <span id="profileTotalOrder">0</span></p><p><strong>Total Refund:</strong> Rp <span id="profileTotalRefund">0</span></p><p><strong>API Key:</strong> <span id="profileApiKey" style="font-family:monospace;">-</span></p><hr style="margin:20px 0;"><h4>📞 Kontak Support</h4><p>WhatsApp: <a href="https://wa.me/6283805385608">0838-0538-5608</a></p><p>Telegram: <a href="https://t.me/heyyarya122">@heyyarya122</a></p><p>Store ID: ARYASTOREID</p></div></div>
+    </div></div>
+
+    <script>
+        let currentUser = null;
+        let selectedServerNokos = null;
+        let selectedCountryNokos = 'id';
+        let selectedNokosService = null;
+        let selectedSmmCategory = null;
+        let selectedSmmService = null;
+        let activePaymentTimeout = null;
+
+        const countries = [
+            { code: "id", name: "Indonesia", flag: "🇮🇩", price: 2500 },
+            { code: "us", name: "United States", flag: "🇺🇸", price: 5000 },
+            { code: "gb", name: "United Kingdom", flag: "🇬🇧", price: 5500 },
+            { code: "sg", name: "Singapore", flag: "🇸🇬", price: 4500 },
+            { code: "my", name: "Malaysia", flag: "🇲🇾", price: 4000 }
+        ];
+
+        const nokosServices = [
+            { id: 1, name: "WhatsApp", icon: "fab fa-whatsapp" },
+            { id: 2, name: "Telegram", icon: "fab fa-telegram" },
+            { id: 3, name: "Google", icon: "fab fa-google" },
+            { id: 4, name: "Instagram", icon: "fab fa-instagram" }
+        ];
+
+        const smmData = {
+            instagram: { name: "Instagram", icon: "fab fa-instagram", services: [{ id: 101, name: "Followers", price: 25000, min: 100 },{ id: 102, name: "Likes", price: 5000, min: 50 }] },
+            tiktok: { name: "TikTok", icon: "fab fa-tiktok", services: [{ id: 201, name: "Followers", price: 30000, min: 100 },{ id: 202, name: "Likes", price: 7000, min: 50 }] },
+            facebook: { name: "Facebook", icon: "fab fa-facebook", services: [{ id: 301, name: "Followers", price: 20000, min: 100 }] }
+        };
+
+        function generateApiKey(username) { return 'XYRO-' + username.toUpperCase() + '-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString(36).toUpperCase(); }
+        function getUsers() { return JSON.parse(localStorage.getItem('xyro_users') || '[]'); }
+        function saveUsers(users) { localStorage.setItem('xyro_users', JSON.stringify(users)); }
+
+        function openLoginModal() { document.getElementById('authModal').style.display = 'flex'; showLoginForm(); }
+        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+        function showLoginForm() { document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; document.getElementById('authTitle').innerText = 'Login XYRO OTP'; }
+        function showRegisterForm() { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; document.getElementById('authTitle').innerText = 'Daftar Akun'; }
+        function showApiDocsLanding() { document.getElementById('apiDocsModal').style.display = 'flex'; }
+        function closeApiDocsModal() { document.getElementById('apiDocsModal').style.display = 'none'; }
+        function scrollToSection(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
+
+        function handleRegister() {
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            if (!username || !email || !password || password.length < 6) { document.getElementById('authAlert').innerHTML = '<div class="alert-error">Isi semua field! Password min 6 karakter</div>'; return; }
+            const users = getUsers();
+            if (users.find(u => u.username === username)) { document.getElementById('authAlert').innerHTML = '<div class="alert-error">Username sudah terdaftar!</div>'; return; }
+            const apiKey = generateApiKey(username);
+            users.push({ id: Date.now(), username, email, password, balance: 0, orders: [], smmOrders: [], totalDeposit: 0, totalRefund: 0, apiKey });
+            saveUsers(users);
+            document.getElementById('authAlert').innerHTML = '<div class="alert-success">✅ Registrasi berhasil! Silakan login.</div>';
+            setTimeout(() => showLoginForm(), 1500);
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const users = getUsers();
+            const user = users.find(u => u.username === username && u.password === password);
+            if (!user) { document.getElementById('authAlert').innerHTML = '<div class="alert-error">❌ Username atau password salah!</div>'; return; }
+            currentUser = user;
+            localStorage.setItem('xyro_current_user', JSON.stringify(user));
+            closeAuthModal();
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            loadDashboard();
+        }
+
+        function logout() { localStorage.removeItem('xyro_current_user'); document.getElementById('dashboard').style.display = 'none'; document.getElementById('landingPage').style.display = 'block'; currentUser = null; }
+
+        function loadDashboard() {
+            document.getElementById('dashBalance').innerText = currentUser.balance.toLocaleString();
+            document.getElementById('profileUsername').innerText = currentUser.username;
+            document.getElementById('profileEmail').innerText = currentUser.email;
+            document.getElementById('profileTotalDeposit').innerText = currentUser.totalDeposit || 0;
+            document.getElementById('profileTotalOrder').innerText = (currentUser.orders?.length || 0) + (currentUser.smmOrders?.length || 0);
+            document.getElementById('profileTotalRefund').innerText = currentUser.totalRefund || 0;
+            document.getElementById('profileApiKey').innerText = currentUser.apiKey || generateApiKey(currentUser.username);
+            document.getElementById('dashboardApiKey').innerText = currentUser.apiKey || generateApiKey(currentUser.username);
+            renderNokosServers();
+            renderNokosCountries();
+            renderNokosServices();
+            renderSmmCategories();
+            renderHistory();
+        }
+
+        function renderNokosServers() {
+            const container = document.getElementById('serverGridNokos');
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                container.innerHTML += `<div class="server-card ${selectedServerNokos === i ? 'active' : ''}" onclick="selectNokosServer(${i})"><i class="fas fa-server"></i><br>Server ${i}</div>`;
+            }
+        }
+        function selectNokosServer(server) { selectedServerNokos = server; renderNokosServers(); }
+
+        function renderNokosCountries() {
+            const container = document.getElementById('countryGridNokos');
+            if (!container) return;
+            container.innerHTML = '';
+            countries.forEach(c => {
+                container.innerHTML += `<div class="country-card ${selectedCountryNokos === c.code ? 'active' : ''}" onclick="selectNokosCountry('${c.code}')">${c.flag}<br>${c.name}<br><small>Rp ${c.price}</small></div>`;
+            });
+        }
+        function selectNokosCountry(code) { selectedCountryNokos = code; renderNokosCountries(); renderNokosServices(); }
+
+        function renderNokosServices() {
+            const container = document.getElementById('nokosServiceGrid');
+            if (!container) return;
+            container.innerHTML = '';
+            const price = countries.find(c => c.code === selectedCountryNokos)?.price || 2500;
+            nokosServices.forEach(svc => {
+                container.innerHTML += `<div class="service-card ${selectedNokosService === svc.id ? 'selected' : ''}" onclick="selectNokosService(${svc.id})"><i class="${svc.icon}" style="font-size:24px;"></i><br><strong>${svc.name}</strong><br>Rp ${price.toLocaleString()}</div>`;
+            });
+        }
+        function selectNokosService(id) { selectedNokosService = id; renderNokosServices(); }
+
+        function renderSmmCategories() {
+            const container = document.getElementById('smmCategoryGrid');
+            if (!container) return;
+            container.innerHTML = '';
+            Object.keys(smmData).forEach(cat => {
+                container.innerHTML += `<div class="smm-card ${selectedSmmCategory === cat ? 'selected' : ''}" onclick="selectSmmCategory('${cat}')"><i class="${smmData[cat].icon}" style="font-size:24px;"></i><br>${smmData[cat].name}</div>`;
+            });
+        }
+        function selectSmmCategory(cat) {
+            selectedSmmCategory = cat;
+            selectedSmmService = null;
+            renderSmmCategories();
+            const container = document.getElementById('smmServiceGrid');
+            container.innerHTML = '';
+            smmData[cat].services.forEach(svc => {
+                container.innerHTML += `<div class="service-card" onclick="selectSmmService(${svc.id}, '${svc.name}', ${svc.price})"><strong>${svc.name}</strong><br>Rp ${svc.price.toLocaleString()}<br><small>Min: ${svc.min}</small></div>`;
+            });
+        }
+        function selectSmmService(id, name, price) { selectedSmmService = { id, name, price }; document.getElementById('smmPriceInfo').innerHTML = `<strong>${name}</strong><br>Harga: Rp ${price.toLocaleString()} / unit`; }
+
+        function generateQRIS() {
+            let amount = parseInt(document.getElementById('depositAmount').value);
+            if (!amount || amount < 10000) { alert('Minimal deposit Rp 10.000'); return; }
+            if (activePaymentTimeout) clearTimeout(activePaymentTimeout);
+            
+            const qrContainer = document.getElementById('qrcodeDeposit');
+            qrContainer.innerHTML = '';
+            const qrisData = `QRIS://xyro.deposit?user=${currentUser.username}&amount=${amount}&store=ARYASTOREID`;
+            new QRCode(qrContainer, { text: qrisData, width: 200, height: 200 });
+            
+            let timeLeft = 120;
+            const timerElement = document.getElementById('countdownTimer');
+            document.getElementById('depositMsg').innerHTML = '<div class="loading"></div> Menunggu pembayaran... QRIS berlaku 2 menit';
+            
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.innerHTML = `<span class="countdown">⏰ ${Math.floor(timeLeft/60)}:${(timeLeft%60).toString().padStart(2,'0')}</span>`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('depositMsg').innerHTML = '<span style="color:#ef4444;">❌ Waktu habis! Transaksi dibatalkan.</span>';
+                    timerElement.innerHTML = '';
+                }
+            }, 1000);
+            
+            activePaymentTimeout = setTimeout(() => {
+                clearInterval(timerInterval);
+                currentUser.balance += amount;
+                currentUser.totalDeposit = (currentUser.totalDeposit || 0) + amount;
+                updateCurrentUser();
+                document.getElementById('dashBalance').innerText = currentUser.balance.toLocaleString();
+                document.getElementById('profileTotalDeposit').innerText = currentUser.totalDeposit;
+                document.getElementById('depositMsg').innerHTML = '<span style="color:#10b981;">✅ Deposit BERHASIL! Saldo auto masuk.</span>';
+                timerElement.innerHTML = '';
+                addHistory(`💰 Deposit Rp ${amount.toLocaleString()} berhasil via QRIS!`, 'success');
+                setTimeout(() => document.getElementById('depositMsg').innerHTML = '', 3000);
+            }, 8000);
+        }
+
+        async function placeNokosOrder() {
+            if (!selectedServerNokos) { alert('Pilih server!'); return; }
+            if (!selectedNokosService) { alert('Pilih layanan!'); return; }
+            const countryData = countries.find(c => c.code === selectedCountryNokos);
+            const price = countryData.price;
+            if (currentUser.balance < price) { alert(`Saldo tidak cukup! Deposit dulu Rp ${(price - currentUser.balance).toLocaleString()}`); return; }
+            
+            document.getElementById('nokosOrderBtn').disabled = true;
+            document.getElementById('nokosOrderLoading').style.display = 'block';
+            document.getElementById('nokosOrderResult').innerHTML = '';
+            
+            await new Promise(r => setTimeout(r, 1500));
+            const virtualNum = countryData.code === 'id' ? '62' + Math.floor(8e10 + Math.random() * 9e10).toString().slice(0, 12) : '+' + Math.floor(1e10 + Math.random() * 9e10).toString();
+            const orderId = 'NOK' + Date.now();
+            const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            currentUser.balance -= price;
+            const orderData = { id: orderId, type: 'nokos', server: selectedServerNokos, country: countryData.name, service: nokosServices.find(s => s.id === selectedNokosService)?.name, phone: virtualNum, price: price, status: 'pending', otp: null, time: new Date().toISOString() };
+            if (!currentUser.orders) currentUser.orders = [];
+            currentUser.orders.unshift(orderData);
+            updateCurrentUser();
+            document.getElementById('dashBalance').innerText = currentUser.balance.toLocaleString();
+            document.getElementById('nokosOrderLoading').style.display = 'none';
+            
+            document.getElementById('nokosOrderResult').innerHTML = `<div class="info-box"><i class="fas fa-phone-alt"></i><h2>${virtualNum}</h2><p>Negara: ${countryData.name} | Layanan: ${orderData.service}</p><div class="loading" style="margin-top:10px;"></div><small>Menunggu OTP (maks 60 detik)</small></div>`;
+            
+            let otpReceived = false;
+            let attempts = 0;
+            const interval = setInterval(() => {
+                attempts++;
+                if (!otpReceived && attempts < 12) {
+                    if (Math.random() < 0.85) {
+                        otpReceived = true;
+                        clearInterval(interval);
+                        orderData.status = 'success';
+                        orderData.otp = otpCode;
+                        updateCurrentUser();
+                        document.getElementById('nokosOrderResult').innerHTML = `<div class="success-box"><i class="fas fa-check-circle" style="font-size:30px;"></i><h2>${otpCode}</h2><p>✅ OTP BERHASIL! Kode: ${otpCode}</p><p>Nomor: ${virtualNum}</p></div>`;
+                        addHistory(`✅ Nokos Order #${orderId}: ${orderData.service} (${countryData.name}) - ${virtualNum} - OTP: ${otpCode}`, 'success');
+                        document.getElementById('nokosOrderBtn').disabled = false;
+                    }
+                } else if (!otpReceived && attempts >= 12) {
+                    clearInterval(interval);
+                    currentUser.balance += price;
+                    currentUser.totalRefund = (currentUser.totalRefund || 0) + price;
+                    orderData.status = 'failed';
+                    updateCurrentUser();
+                    document.getElementById('dashBalance').innerText = currentUser.balance.toLocaleString();
+                    document.getElementById('profileTotalRefund').innerText = currentUser.totalRefund;
+                    document.getElementById('nokosOrderResult').innerHTML = `<div class="failed-box"><i class="fas fa-times-circle" style="font-size:30px;"></i><h2>OTP GAGAL!</h2><p>💰 Auto refund Rp ${price.toLocaleString()} ke saldo Anda</p></div>`;
+                    addHistory(`❌ Nokos Order #${orderId}: GAGAL - Auto refund Rp ${price.toLocaleString()}`, 'error');
+                    document.getElementById('nokosOrderBtn').disabled = false;
+                }
+            }, 5000);
+        }
+
+        async function placeSmmOrder() {
+            if (!selectedSmmCategory || !selectedSmmService) { alert('Pilih layanan SMM!'); return; }
+            const target = document.getElementById('smmTarget').value;
+            const quantity = parseInt(document.getElementById('smmQuantity').value);
+            if (!target) { alert('Masukkan target!'); return; }
+            if (!quantity || quantity < 10) { alert('Minimal 10!'); return; }
+            const totalPrice = selectedSmmService.price * quantity;
+            if (currentUser.balance < totalPrice) { alert(`Saldo tidak cukup! Butuh Rp ${totalPrice.toLocaleString()}`); return; }
+            
+            currentUser.balance -= totalPrice;
+            const orderId = 'SMM' + Date.now();
+            const smmOrder = { id: orderId, type: 'smm', service: `${smmData[selectedSmmCategory].name} ${selectedSmmService.name}`, target, quantity, price: totalPrice, status: 'processing', time: new Date().toISOString() };
+            if (!currentUser.smmOrders) currentUser.smmOrders = [];
+            currentUser.smmOrders.unshift(smmOrder);
+            if (!currentUser.orders) currentUser.orders = [];
+            currentUser.orders.unshift(smmOrder);
+            updateCurrentUser();
+            document.getElementById('dashBalance').innerText = currentUser.balance.toLocaleString();
+            document.getElementById('smmOrderResult').innerHTML = `<div class="success-box"><i class="fas fa-check-circle"></i><p>✅ Order SMM berhasil! Order ID: ${orderId}</p><p>Status: Processing (1-24 jam)</p></div>`;
+            addHistory(`📊 SMM Order #${orderId}: ${smmOrder.service} - ${target} - ${quantity} pcs - Rp ${totalPrice.toLocaleString()}`, 'success');
+            setTimeout(() => document.getElementById('smmOrderResult').innerHTML = '', 5000);
+            document.getElementById('smmTarget').value = '';
+            document.getElementById('smmQuantity').value = '';
+        }
+
+        function updateCurrentUser() {
+            const users = getUsers();
+            const idx = users.findIndex(u => u.username === currentUser.username);
+            if (idx !== -1) { users[idx] = currentUser; saveUsers(users); localStorage.setItem('xyro_current_user', JSON.stringify(currentUser)); }
+        }
+
+        function addHistory(msg, type) {
+            const historyList = document.getElementById('historyList');
+            const time = new Date().toLocaleTimeString();
+            const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : '📌');
+            historyList.innerHTML = `<div class="activity-item">${icon} [${time}] ${msg}</div>` + historyList.innerHTML;
+        }
+
+        function renderHistory() {
+            const historyList = document.getElementById('historyList');
+            if (!historyList) return;
+            historyList.innerHTML = '';
+            const allOrders = [...(currentUser.orders || []), ...(currentUser.smmOrders || [])].sort((a,b) => new Date(b.time) - new Date(a.time));
+            if (allOrders.length > 0) {
+                allOrders.forEach(o => {
+                    const statusText = o.status === 'success' ? '✅' : (o.status === 'failed' ? '❌' : '⏳');
+                    const otpText = o.otp ? ` - OTP: ${o.otp}` : '';
+                    historyList.innerHTML += `<div class="activity-item">${statusText} [${new Date(o.time).toLocaleString()}] ${o.service || o.name} - ${o.phone || o.target} - Rp ${o.price?.toLocaleString()}${otpText}</div>`;
+                });
+            } else { historyList.innerHTML = '<div class="activity-item">Belum ada transaksi</div>'; }
+        }
+
+        function copyDashboardApiKey() { const apiKey = document.getElementById('dashboardApiKey').innerText; navigator.clipboard.writeText(apiKey); alert('API Key disalin!'); }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            document.getElementById(`tab-${tab}`).style.display = 'block';
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+            if (tab === 'history') renderHistory();
+            if (tab === 'nokos') { renderNokosServers(); renderNokosCountries(); renderNokosServices(); }
+        }
+
+        document.querySelectorAll('.tab-btn').forEach(btn => { btn.onclick = () => switchTab(btn.dataset.tab); });
+
+        const saved = localStorage.getItem('xyro_current_user');
+        if (saved) { currentUser = JSON.parse(saved); document.getElementById('landingPage').style.display = 'none'; document.getElementById('dashboard').style.display = 'block'; loadDashboard(); }
+    </script>
+</body>
+</html>
