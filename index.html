@@ -7,216 +7,180 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    body { font-family: 'Inter', system-ui, sans-serif; transition: background-color 0.3s; }
-    .card-hover:hover { transform: translateY(-8px); }
-    .notification { animation: slideIn 0.4s ease; }
-    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    body { font-family: 'Inter', system_ui, sans-serif; }
+    .hero { background: linear-gradient(135deg, #3b82f6, #6366f1); }
+    .card { transition: all 0.3s ease; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
   </style>
 </head>
-<body class="bg-gray-950 text-white min-h-screen dark">
+<body class="bg-gray-50 text-gray-900">
 
   <!-- Navbar -->
-  <nav class="fixed top-0 w-full bg-black/90 backdrop-blur-lg border-b border-gray-800 z-50">
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center font-bold text-xl">A</div>
-        <span class="text-2xl font-bold">Arya<span class="text-orange-500">Store</span></span>
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">A</div>
+        <div>
+          <span class="text-2xl font-semibold">Arya</span>
+          <span class="text-2xl font-semibold text-orange-500">Store</span>
+        </div>
       </div>
 
       <div class="flex gap-8 text-sm font-medium">
-        <a href="#" onclick="navigate('home')" class="hover:text-blue-400">Home</a>
-        <a href="#" onclick="navigate('beli')" class="hover:text-blue-400">Beli Nomor</a>
-        <a href="#" onclick="navigate('deposit')" class="hover:text-blue-400">Deposit</a>
-        <a href="#" onclick="navigate('reseller')" class="hover:text-blue-400">Reseller</a>
-        <a href="#" onclick="navigate('riwayat')" class="hover:text-blue-400">Riwayat</a>
-        <a href="#" onclick="navigate('api')" class="hover:text-blue-400">API</a>
+        <a href="#" onclick="navigate('home')" class="hover:text-blue-600">Home</a>
+        <a href="#" onclick="navigate('beli')" class="hover:text-blue-600">Beli Nomor</a>
+        <a href="#" onclick="navigate('deposit')" class="hover:text-blue-600">Deposit</a>
+        <a href="#" onclick="navigate('reseller')" class="hover:text-blue-600">Reseller</a>
+        <a href="#" onclick="navigate('riwayat')" class="hover:text-blue-600">Riwayat</a>
       </div>
 
       <div class="flex items-center gap-4">
-        <button onclick="toggleTheme()" id="themeToggle" class="text-xl">🌙</button>
-        
-        <!-- Notification Bell -->
-        <div class="relative cursor-pointer" onclick="toggleNotification()">
-          <i class="fa-solid fa-bell text-xl"></i>
-          <span id="notifCount" class="absolute -top-1 -right-1 bg-red-500 text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
-        </div>
-
-        <button onclick="showProfile()" class="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">👤</button>
+        <button onclick="toggleTheme()" id="themeToggle" class="text-2xl">🌙</button>
+        <button onclick="showProfile()" class="px-5 py-2 bg-blue-600 text-white rounded-2xl font-medium hover:bg-blue-700">Akun</button>
       </div>
     </div>
   </nav>
 
-  <div class="pt-20">
-
-    <!-- HOME -->
-    <section id="home" class="py-20 bg-gradient-to-br from-blue-900 via-purple-900 to-black">
-      <div class="max-w-6xl mx-auto px-6 text-center">
-        <h1 class="text-6xl font-bold mb-6">Arya Store Nokos</h1>
-        <p class="text-2xl text-gray-300">Nomor Virtual • OTP • Reseller System</p>
-      </div>
-    </section>
-
-    <!-- BELI NOMOR -->
-    <section id="beli" class="py-16 hidden">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-8">Beli Nomor Virtual</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div class="lg:col-span-4">
-            <h3 class="font-semibold mb-4">Pilih Server</h3>
-            <div class="bg-gray-900 border-2 border-green-500 p-6 rounded-3xl">Server 2 <span class="text-green-400">(Online)</span></div>
-          </div>
-          <div class="lg:col-span-8">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="appList"></div>
-          </div>
-        </div>
-        <button onclick="prosesOrder()" class="mt-12 w-full bg-gradient-to-r from-blue-600 to-purple-600 py-6 rounded-3xl text-xl font-bold">PROSES ORDER - Rp2.500</button>
-      </div>
-    </section>
-
-    <!-- ORDER MODAL -->
-    <div id="orderModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-      <div class="bg-gray-900 rounded-3xl max-w-lg w-full p-8">
-        <h3 class="text-2xl font-bold mb-6">Detail Order</h3>
-        <div id="orderContent" class="space-y-6"></div>
-        <div id="otpSection" class="hidden mt-6 p-6 bg-black rounded-2xl text-center">
-          <p class="text-green-400 text-4xl font-mono" id="otpCode">482917</p>
-        </div>
-        <button onclick="tutupOrderModal()" class="mt-8 w-full py-4 border border-gray-700 rounded-2xl">Tutup</button>
-      </div>
+  <!-- HERO -->
+  <section id="home" class="hero text-white py-24">
+    <div class="max-w-5xl mx-auto text-center px-6">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4">Arya Store Nokos</h1>
+      <p class="text-2xl font-light">Nomor Virtual • OTP • Reseller System</p>
+      <button onclick="navigate('beli')" class="mt-10 bg-white text-blue-600 font-semibold text-lg px-10 py-4 rounded-3xl hover:scale-105 transition">
+        Pesan Sekarang
+      </button>
     </div>
+  </section>
 
-    <!-- DEPOSIT -->
-    <section id="deposit" class="py-16 hidden">
-      <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center mb-10">Top Up Saldo</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-          <div onclick="pilihNominal(2000)" class="bg-gray-900 p-6 rounded-3xl text-center cursor-pointer">Rp2.000</div>
-          <div onclick="pilihNominal(20000)" class="bg-gray-900 p-6 rounded-3xl text-center cursor-pointer">Rp20.000</div>
-          <div onclick="pilihNominal(50000)" class="bg-gray-900 p-6 rounded-3xl text-center cursor-pointer">Rp50.000</div>
-        </div>
-        <button onclick="prosesDeposit()" class="mt-10 w-full bg-green-500 py-6 rounded-3xl text-xl font-bold">LANJUTKAN</button>
-      </div>
-    </section>
-
-    <!-- RESELLER SYSTEM -->
-    <section id="reseller" class="py-16 hidden">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-8">Reseller Dashboard</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-gray-900 p-8 rounded-3xl">
-            <p class="text-sm text-gray-400">Komisi Bulan Ini</p>
-            <p class="text-4xl font-bold text-green-400">Rp1.250.000</p>
-          </div>
-          <div class="bg-gray-900 p-8 rounded-3xl">
-            <p class="text-sm text-gray-400">Downline</p>
-            <p class="text-4xl font-bold">12 Orang</p>
-          </div>
-          <div class="bg-gray-900 p-8 rounded-3xl">
-            <p class="text-sm text-gray-400">Total Penjualan</p>
-            <p class="text-4xl font-bold">Rp8.450.000</p>
+  <!-- BELI NOMOR -->
+  <section id="beli" class="py-16 hidden bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Beli Nomor Virtual</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-4">
+          <h3 class="font-semibold mb-4 text-lg">Pilih Server</h3>
+          <div class="bg-white border-2 border-green-500 p-6 rounded-3xl shadow-sm card">
+            <p class="font-semibold text-lg">Server 2 <span class="text-green-600">(Online)</span></p>
           </div>
         </div>
-        <button onclick="alert('Link referral telah disalin!')" class="mt-8 w-full bg-gradient-to-r from-purple-500 to-pink-500 py-6 rounded-3xl font-bold">Bagikan Link Referral</button>
-      </div>
-    </section>
 
-    <!-- RIWAYAT -->
-    <section id="riwayat" class="py-16 hidden">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-8">Riwayat Transaksi</h2>
-        <div id="riwayatList" class="space-y-4"></div>
-      </div>
-    </section>
-
-    <!-- API -->
-    <section id="api" class="py-16 hidden">
-      <div class="max-w-5xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-8">Dokumentasi API</h2>
-        <div class="bg-gray-900 p-8 rounded-3xl font-mono">
-          <p>API Key: <span class="text-blue-400">fp_arya_9k2m7x8v3n1p4q6r8t2y5u9i0o</span></p>
+        <div class="lg:col-span-8">
+          <input type="text" id="search" placeholder="Cari aplikasi (WhatsApp, Telegram, dll)" 
+                 class="w-full border border-gray-300 rounded-3xl px-6 py-4 focus:outline-none focus:border-blue-500 mb-6">
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="appList"></div>
         </div>
       </div>
-    </section>
-  </div>
 
-  <!-- NOTIFICATION PANEL -->
-  <div id="notificationPanel" class="hidden fixed top-20 right-6 w-96 bg-gray-900 border border-gray-700 rounded-3xl shadow-2xl p-6 z-50">
-    <h3 class="font-bold mb-4">Notifikasi Real-time</h3>
-    <div id="notifList" class="space-y-4 text-sm"></div>
-  </div>
+      <button onclick="prosesOrder()" class="mt-12 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-6 rounded-3xl text-xl font-semibold">
+        PROSES ORDER - Rp2.500
+      </button>
+    </div>
+  </section>
 
-  <!-- ADMIN PANEL -->
-  <div id="adminPanel" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50">
-    <div class="bg-gray-900 rounded-3xl w-full max-w-2xl p-8">
-      <h2 class="text-3xl font-bold mb-6">🔧 Admin Panel (Demo)</h2>
-      <div class="grid grid-cols-2 gap-4">
-        <div class="bg-gray-800 p-6 rounded-2xl">Total User: 1,284</div>
-        <div class="bg-gray-800 p-6 rounded-2xl">Total Order Hari Ini: 87</div>
-        <div class="bg-gray-800 p-6 rounded-2xl">Server Status: Stable</div>
-        <div class="bg-gray-800 p-6 rounded-2xl">Pendapatan: Rp47.2jt</div>
+  <!-- ORDER MODAL -->
+  <div id="orderModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl max-w-lg w-full mx-4 p-8">
+      <h3 class="text-2xl font-bold mb-6">Detail Order</h3>
+      <div id="orderContent" class="space-y-6 text-gray-700"></div>
+      
+      <div id="otpSection" class="hidden mt-8 p-6 bg-gray-100 rounded-2xl text-center">
+        <p class="text-sm text-gray-500">Kode OTP</p>
+        <p id="otpCode" class="text-5xl font-mono font-bold text-green-600">482917</p>
       </div>
-      <button onclick="hideAdmin()" class="mt-8 w-full py-4 bg-red-500 rounded-2xl">Tutup Admin</button>
+
+      <button onclick="tutupOrderModal()" class="mt-8 w-full py-4 border border-gray-300 rounded-3xl font-medium">Tutup</button>
     </div>
   </div>
+
+  <!-- DEPOSIT -->
+  <section id="deposit" class="py-16 hidden bg-gray-50">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Top Up Saldo</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <div onclick="pilihNominal(2000)" class="bg-white p-8 rounded-3xl text-center shadow-sm card cursor-pointer">Rp2.000</div>
+        <div onclick="pilihNominal(20000)" class="bg-white p-8 rounded-3xl text-center shadow-sm card cursor-pointer">Rp20.000</div>
+        <div onclick="pilihNominal(50000)" class="bg-white p-8 rounded-3xl text-center shadow-sm card cursor-pointer">Rp50.000</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESELLER -->
+  <section id="reseller" class="py-16 hidden bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Reseller System</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white border border-gray-200 p-8 rounded-3xl text-center card">
+          <p class="text-4xl font-bold text-green-600">Rp1.250.000</p>
+          <p class="text-gray-500">Komisi Bulan Ini</p>
+        </div>
+        <div class="bg-white border border-gray-200 p-8 rounded-3xl text-center card">
+          <p class="text-4xl font-bold">12</p>
+          <p class="text-gray-500">Downline</p>
+        </div>
+        <div class="bg-white border border-gray-200 p-8 rounded-3xl text-center card">
+          <p class="text-4xl font-bold">Rp8.450.000</p>
+          <p class="text-gray-500">Total Penjualan</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIWAYAT -->
+  <section id="riwayat" class="py-16 hidden bg-gray-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-8">Riwayat Transaksi</h2>
+      <div id="riwayatList" class="space-y-4"></div>
+    </div>
+  </section>
 
   <!-- Profile Modal -->
-  <div id="profileModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-    <div class="bg-gray-900 rounded-3xl w-full max-w-md p-8">
+  <div id="profileModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-8">
       <div class="text-center">
-        <div class="w-28 h-28 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-6xl">👤</div>
-        <h2 class="text-3xl font-bold mt-4">arya</h2>
-        <p class="text-green-400">Member Premium</p>
+        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-5xl">👤</div>
+        <h2 class="text-2xl font-bold mt-4">arya</h2>
       </div>
-      <button onclick="showAdmin()" class="mt-6 w-full py-4 border border-yellow-500 text-yellow-400 rounded-2xl">Masuk Admin Panel</button>
-      <button onclick="hideProfile()" class="mt-3 w-full py-4 text-red-500">Keluar Akun</button>
+      <button onclick="hideProfile()" class="mt-10 w-full py-4 bg-red-100 text-red-600 rounded-3xl">Keluar Akun</button>
     </div>
   </div>
 
   <script>
-    let isDark = true;
-
-    function toggleTheme() {
-      isDark = !isDark;
-      document.documentElement.classList.toggle('dark', isDark);
-      document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
-    }
-
     function navigate(page) {
       document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
       document.getElementById(page).classList.remove('hidden');
     }
 
-    const apps = ["WhatsApp", "Telegram", "Instagram", "TikTok", "Shopee"];
+    const apps = ["WhatsApp", "Telegram", "Instagram", "TikTok", "Shopee", "Gojek"];
     function loadApps() {
-      document.getElementById('appList').innerHTML = apps.map(app => `
-        <div onclick="pilihApp('\( {app}')" class="bg-gray-900 p-6 rounded-3xl text-center cursor-pointer card-hover"> \){app}</div>
+      const container = document.getElementById('appList');
+      container.innerHTML = apps.map(app => `
+        <div onclick="pilihApp('${app}')" class="bg-white border border-gray-200 p-8 rounded-3xl text-center card cursor-pointer">
+          <p class="font-semibold text-lg">${app}</p>
+        </div>
       `).join('');
     }
 
     function pilihApp(app) {
-      alert(`Aplikasi ${app} dipilih`);
+      alert(`✅ ${app} dipilih`);
     }
 
     function prosesOrder() {
       const order = {
-        id: "ORD-" + Math.floor(Math.random()*999999),
-        app: "WhatsApp",
-        number: "+628" + Math.floor(100000000 + Math.random()*900000000),
-        otp: "482917"
+        id: "ORD-" + Date.now().toString().slice(-6),
+        number: "+628" + Math.floor(100000000 + Math.random() * 900000000)
       };
 
       document.getElementById('orderContent').innerHTML = `
-        <p class="font-mono">Order ID: ${order.id}</p>
-        <p>Aplikasi: ${order.app}</p>
-        <p>Nomor: ${order.number}</p>
+        <p class="font-medium">Order ID: <span class="font-mono">${order.id}</span></p>
+        <p class="font-medium">Aplikasi: WhatsApp</p>
+        <p class="font-medium">Nomor: <span class="font-mono">${order.number}</span></p>
       `;
       document.getElementById('orderModal').classList.remove('hidden');
 
       setTimeout(() => {
         document.getElementById('otpSection').classList.remove('hidden');
-        document.getElementById('otpCode').textContent = order.otp;
-        addNotification("OTP telah muncul!", "success");
-      }, 2500);
+      }, 2200);
     }
 
     function tutupOrderModal() {
@@ -226,37 +190,27 @@
 
     function addToRiwayat() {
       const list = document.getElementById('riwayatList');
-      const div = document.createElement('div');
-      div.className = "bg-gray-900 p-6 rounded-3xl flex justify-between";
-      div.innerHTML = `<div>WhatsApp • +628xxxxxxxxx</div><div class="text-green-400">Sukses</div>`;
-      list.prepend(div);
+      const item = document.createElement('div');
+      item.className = "bg-white border border-gray-200 p-6 rounded-3xl flex justify-between items-center";
+      item.innerHTML = `
+        <div>
+          <p class="font-semibold">WhatsApp</p>
+          <p class="text-sm text-gray-500">+628xxxxxxxxxx</p>
+        </div>
+        <div class="text-right">
+          <p class="text-green-600 font-semibold">Rp2.500</p>
+          <p class="text-xs text-green-600">Sukses</p>
+        </div>
+      `;
+      list.prepend(item);
     }
 
-    function pilihNominal(nom) { alert(`Rp${nom} dipilih`); }
-    function prosesDeposit() { alert("Deposit berhasil!"); }
-
-    // Notification
-    function addNotification(message, type = "info") {
-      const list = document.getElementById('notifList');
-      const notif = document.createElement('div');
-      notif.className = `p-4 rounded-2xl notification ${type === 'success' ? 'bg-green-900' : 'bg-gray-800'}`;
-      notif.innerHTML = message;
-      list.prepend(notif);
+    function pilihNominal(nom) {
+      alert(`Nominal Rp${nom.toLocaleString('id-ID')} dipilih`);
     }
 
-    function toggleNotification() {
-      const panel = document.getElementById('notificationPanel');
-      panel.classList.toggle('hidden');
-    }
-
-    // Admin
-    function showAdmin() {
-      hideProfile();
-      document.getElementById('adminPanel').classList.remove('hidden');
-    }
-
-    function hideAdmin() {
-      document.getElementById('adminPanel').classList.add('hidden');
+    function toggleTheme() {
+      alert("Mode Gelap akan ditambahkan pada update berikutnya");
     }
 
     function showProfile() {
@@ -267,14 +221,10 @@
       document.getElementById('profileModal').classList.add('hidden');
     }
 
-    // Init
+    // Initialize
     window.onload = () => {
       loadApps();
       navigate('home');
-      
-      // Real-time notification demo
-      setTimeout(() => addNotification("Server 2 stabil ✅", "success"), 2000);
-      setTimeout(() => addNotification("Ada order baru dari reseller", "info"), 5000);
     };
   </script>
 </body>
